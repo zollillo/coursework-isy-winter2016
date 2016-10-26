@@ -81,6 +81,22 @@ print 'Magnitude of vec3 =', magnitude(vec3), '\n'
 
 # (3) compute vec0^T vec1 M vec0 using numpy operations
 # be aware of what is a column and a row vector
+#
+# Resources used:
+# http://www.sam.math.ethz.ch/~raoulb/teaching/PythonTutorial/intro_numpy.html#basic-linear-algebra
+vec0T = vec0.transpose()
+vec0T_dot_vec1 = np.dot(vec0T, vec1)
+M_dot_vec0 = np.dot(M, vec0)
+result = vec0T_dot_vec1 * M_dot_vec0
+# Print results to console
+print 'vec0.transpose() =', vec0T
+print 'Shape of vec0 transposed is', vec0T.shape
+print 'np.dot(vec0T, vec1) =', vec0T_dot_vec1
+print 'np.dot(M, vec0) ='
+print M_dot_vec0
+print 'Result ='
+print result, '\n'
+
 
 ######################################################################
 # A2. OpenCV and Transformation and Computer Vision Basic
