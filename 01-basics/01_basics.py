@@ -109,7 +109,39 @@ print result, '\n'
 
 # why Lenna? https://de.wikipedia.org/wiki/Lena_(Testbild)
 
-# (2) Now shift both images by half (translation in x) it rotate the colored image by 30 degrees using OpenCV transformation functions
+# To come up with the solution, the following resources were used:
+# http://docs.opencv.org/3.1.0/dc/d2e/tutorial_py_image_display.html
+# http://stackoverflow.com/questions/23768832/copy-grayscale-image-to-rgb-images-red-channel-opencv
+# http://cs.brown.edu/courses/cs143/lectures/03.pdf
+# https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_core/py_basic_ops/py_basic_ops.html#basic-ops
+lenna_gray = cv2.imread('Lenna.png', 0)
+lenna_color = cv2.imread('Lenna.png', 1)
+rows, columns = lenna_color.shape[:2]
+
+# Create a new blank image with twice the width (i.e. number of columns) of the original image and 3 color channels.
+# The image is initially filled with zeros, and therefore, it is black.
+juxtaposed_lenna = np.zeros((rows, columns*2, 3), np.uint8)
+
+# Use numpy indexing to select the region of interest (ROI) where to copy the gray scale image.
+juxtaposed_lenna[:, 0:columns, 0] = lenna_gray
+juxtaposed_lenna[:, 0:columns, 1] = lenna_gray
+juxtaposed_lenna[:, 0:columns, 2] = lenna_gray
+
+# Join the color image next to the region of the gray scale image to generate the desired juxtaposition.
+juxtaposed_lenna = np.concatenate((juxtaposed_lenna[:, 0:columns], lenna_color), axis=1)
+
+# Display the generated image
+cv2.namedWindow('Lenna juxtaposed', cv2.WINDOW_NORMAL)
+cv2.imshow('Lenna juxtaposed', juxtaposed_lenna)
+k = cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# Print some useful information to console
+print 'Shape of lenna_gray is', lenna_gray.shape
+print 'Shape of lenna_color is', lenna_color.shape, '\n'
+
+# (2) Now shift both images by half (translation in x)
+# it rotate the colored image by 30 degrees using OpenCV transformation functions
 # + do one of the operations on keypress (t - translate, r - rotate, 'q' - quit using cv::warpAffine
 # http://docs.opencv.org/3.1.0/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
 # Tip: you need to define a transformation Matrix M
