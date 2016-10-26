@@ -53,11 +53,31 @@ print 'Shape of vec3 is', vec3.shape, '\n'
 # do not use the dot product given by numpy
 #
 # usage: dot(vec0,vec1) and dot(vec2, vec3), norm(v0-v1)
+#
+# Resources used to come up with the solution:
+# http://www.engr.ucsb.edu/~shell/che210d/numpy.pdf
+# http://www.sam.math.ethz.ch/~raoulb/teaching/PythonTutorial/intro_numpy.html
 def dot(v0, v1):
     pass
 
-def norm(v):
-    pass
+
+def magnitude(v):
+    """
+    Calculates the magnitude of an arbitrary vector (i.e. its length).
+
+    :param v: The vector the magnitude of which to calculate.
+    :return: A scalar value of the vector's magnitude.
+    """
+    mag = np.array([i * i for i in v])
+    return np.sqrt(mag.sum())
+
+
+# Print to console to test the function with the given vectors
+print 'Magnitude of vec0 =', magnitude(vec0)
+print 'Magnitude of vec1 =', magnitude(vec1)
+print 'Magnitude of vec2 =', magnitude(vec2)
+print 'Magnitude of vec3 =', magnitude(vec3), '\n'
+
 
 # (3) compute vec0^T vec1 M vec0 using numpy operations
 # be aware of what is a column and a row vector
