@@ -73,10 +73,10 @@ def magnitude(v):
 
 
 # Print to console to test the function with the given vectors
-print 'Magnitude of vec0 =', magnitude(vec0)
-print 'Magnitude of vec1 =', magnitude(vec1)
-print 'Magnitude of vec2 =', magnitude(vec2)
-print 'Magnitude of vec3 =', magnitude(vec3), '\n'
+# print 'Magnitude of vec0 =', magnitude(vec0)
+# print 'Magnitude of vec1 =', magnitude(vec1)
+# print 'Magnitude of vec2 =', magnitude(vec2)
+# print 'Magnitude of vec3 =', magnitude(vec3), '\n'
 
 
 # (3) compute vec0^T vec1 M vec0 using numpy operations
@@ -120,7 +120,7 @@ rows, columns = lenna_color.shape[:2]
 
 # Create a new blank image with twice the width (i.e. number of columns) of the original image and 3 color channels.
 # The image is initially filled with zeros, and therefore, it is black.
-juxtaposed_lenna = np.zeros((rows, columns*2, 3), np.uint8)
+juxtaposed_lenna = np.zeros((rows, columns * 2, 3), np.uint8)
 
 # Use numpy indexing to select the region of interest (ROI) where to copy the gray scale image.
 juxtaposed_lenna[:, 0:columns, 0] = lenna_gray
@@ -131,14 +131,12 @@ juxtaposed_lenna[:, 0:columns, 2] = lenna_gray
 juxtaposed_lenna = np.concatenate((juxtaposed_lenna[:, 0:columns], lenna_color), axis=1)
 
 # Display the generated image
-cv2.namedWindow('Lenna juxtaposed', cv2.WINDOW_NORMAL)
 cv2.imshow('Lenna juxtaposed', juxtaposed_lenna)
-k = cv2.waitKey(0)
-cv2.destroyAllWindows()
 
 # Print some useful information to console
 print 'Shape of lenna_gray is', lenna_gray.shape
 print 'Shape of lenna_color is', lenna_color.shape, '\n'
+
 
 # (2) Now shift both images by half (translation in x)
 # it rotate the colored image by 30 degrees using OpenCV transformation functions
@@ -146,6 +144,32 @@ print 'Shape of lenna_color is', lenna_color.shape, '\n'
 # http://docs.opencv.org/3.1.0/da/d54/group__imgproc__transform.html#ga0203d9ee5fcd28d40dbc4a1ea4451983
 # Tip: you need to define a transformation Matrix M
 # see result image
+
+# Resources used to come up with solution:
+# http://docs.opencv.org/3.1.0/dc/d2e/tutorial_py_image_display.html
+# http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html
+
+# Transformation matrix T to translate images along x-axis by half their width
+T = np.array([[1, 0, 0.5 * columns], [0, 1, 1]], dtype='f')
+# Transformation matrix R to rotate images by 30 degrees
+R = cv2.getRotationMatrix2D((0, 0), 30, 1)
+
+# Wait for keyboard event
+k = cv2.waitKey(0) & 0xFF
+print 'Key %s was pressed!' % chr(k).upper()
+# Wait for 'q' key to exit
+if chr(k) == 'q':
+    cv2.destroyAllWindows()
+# Wait for 't' key to translate images along x-axis
+elif chr(k) == 't':
+    output = cv2.warpAffine(juxtaposed_lenna, T, (columns * 2, rows))
+    cv2.imshow('Lenna juxtaposed & translated', output)
+# Wait for 'r' key to rotate images
+elif chr(k) == 'r':
+    output = cv2.warpAffine(juxtaposed_lenna, R, (columns * 2, rows))
+    cv2.imshow('Lenna juxtaposed & rotated', output)
+else:
+    print 'some key', chr(k)
 
 
 # (3) Please implement a convolution on grayscale image.
