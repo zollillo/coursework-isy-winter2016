@@ -156,20 +156,26 @@ R = cv2.getRotationMatrix2D((0, 0), 30, 1)
 
 # Wait for keyboard event
 k = cv2.waitKey(0) & 0xFF
-print 'Key %s was pressed!' % chr(k).upper()
+print 'Key %s was pressed!' % chr(k)
 # Wait for 'q' key to exit
-if chr(k) == 'q':
+if k == ord('q'):
+    print 'Close window.'
     cv2.destroyAllWindows()
 # Wait for 't' key to translate images along x-axis
-elif chr(k) == 't':
+elif k == ord('t'):
+    print 'Perform translation.'
     output = cv2.warpAffine(juxtaposed_lenna, T, (columns * 2, rows))
     cv2.imshow('Lenna juxtaposed & translated', output)
 # Wait for 'r' key to rotate images
-elif chr(k) == 'r':
+elif k == ord('r'):
+    print 'Perform rotation.'
     output = cv2.warpAffine(juxtaposed_lenna, R, (columns * 2, rows))
     cv2.imshow('Lenna juxtaposed & rotated', output)
 else:
-    print 'some key', chr(k)
+    print 'No action defined on this key. \n' \
+          'Press %s to close the window. \n' \
+          'Press %s to translate the image. \n' \
+          'Press %s to rotate the image.' % ('q', 't', 'r')
 
 
 # (3) Please implement a convolution on grayscale image.
