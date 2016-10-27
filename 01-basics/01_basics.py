@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import math
 import time
+from matplotlib import pyplot as plt
 from gaussian_kernel_calculator import *
 
 
@@ -130,13 +131,11 @@ juxtaposed_lenna[:, 0:columns, 2] = lenna_gray
 # Join the color image next to the region of the gray scale image to generate the desired juxtaposition.
 juxtaposed_lenna = np.concatenate((juxtaposed_lenna[:, 0:columns], lenna_color), axis=1)
 
-# Display the generated image
-cv2.imshow('Lenna juxtaposed', juxtaposed_lenna)
+# For displaying the generated image - see below!
 
 # Print some useful information to console
 print 'Shape of lenna_gray is', lenna_gray.shape
 print 'Shape of lenna_color is', lenna_color.shape, '\n'
-
 
 # (2) Now shift both images by half (translation in x)
 # it rotate the colored image by 30 degrees using OpenCV transformation functions
@@ -148,34 +147,55 @@ print 'Shape of lenna_color is', lenna_color.shape, '\n'
 # Resources used to come up with solution:
 # http://docs.opencv.org/3.1.0/dc/d2e/tutorial_py_image_display.html
 # http://docs.opencv.org/3.1.0/da/d6e/tutorial_py_geometric_transformations.html
+# http://stackoverflow.com/a/14494131
+# http://docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html
+# http://docs.opencv.org/3.1.0/d5/d0f/tutorial_py_gradients.html
 
 # Transformation matrix T to translate images along x-axis by half their width
 T = np.array([[1, 0, 0.5 * columns], [0, 1, 1]], dtype='f')
 # Transformation matrix R to rotate images by 30 degrees
 R = cv2.getRotationMatrix2D((0, 0), 30, 1)
 
-# Wait for keyboard event
-k = cv2.waitKey(0) & 0xFF
-print 'Key %s was pressed!' % chr(k)
-# Wait for 'q' key to exit
-if k == ord('q'):
-    print 'Close window.'
-    cv2.destroyAllWindows()
-# Wait for 't' key to translate images along x-axis
-elif k == ord('t'):
-    print 'Perform translation.'
-    output = cv2.warpAffine(juxtaposed_lenna, T, (columns * 2, rows))
-    cv2.imshow('Lenna juxtaposed & translated', output)
-# Wait for 'r' key to rotate images
-elif k == ord('r'):
-    print 'Perform rotation.'
-    output = cv2.warpAffine(juxtaposed_lenna, R, (columns * 2, rows))
-    cv2.imshow('Lenna juxtaposed & rotated', output)
-else:
-    print 'No action defined on this key. \n' \
-          'Press %s to close the window. \n' \
-          'Press %s to translate the image. \n' \
-          'Press %s to rotate the image.' % ('q', 't', 'r')
+while True:
+    # Display the generated image
+    cv2.imshow('Lenna juxtaposed', juxtaposed_lenna)
+    # Wait for keyboard event
+    k = cv2.waitKey(0) & 0xFF
+    # Wait for 'q' key to exit
+    if k == ord('q'):
+        print 'You pressed %s. Quitting demo.' % chr(k)
+        break
+    # Wait for 't' key to translate images along x-axis
+    elif k == ord('t'):
+        print 'You pressed %s. Performing translation.' % chr(k)
+        output = cv2.warpAffine(juxtaposed_lenna, T, (columns * 2, rows))
+        cv2.imshow('Lenna juxtaposed & translated', output)
+    # Wait for 'r' key to rotate images
+    elif k == ord('r'):
+        print 'You pressed %s. Performing rotation.' % chr(k)
+        output = cv2.warpAffine(juxtaposed_lenna, R, (columns * 2, rows))
+        cv2.imshow('Lenna juxtaposed & rotated', output)
+    # Wait for 'c' to perform Canny Edge detection
+    elif k == ord('c'):
+        edges = cv2.Canny(juxtaposed_lenna, 70, 300)
+        cv2.imshow('Lenna juxtaposed & Canny Edge Detection', edges)
+        # Wait for 's' to apply Sobel filter in Y
+    elif k == ord('s'):
+        sobel = cv2.Sobel(juxtaposed_lenna, cv2.CV_64F, 0, 1, ksize=11)
+        abs_sobel = np.absolute(sobel)
+        sobel_8u = np.uint8(abs_sobel)
+        cv2.imshow('Lenna juxtaposed & Sobel filter', sobel)
+        # Wait for 'l' to apply Laplacian filter
+    elif k == ord('l'):
+        laplace = cv2.Laplacian(juxtaposed_lenna, cv2.CV_64F)
+        cv2.imshow('Lenna juxtaposed & Laplacian filter', laplace)
+    else:
+        print 'You pressed %s. No action defined on this key. \n' \
+           'Press %s to close the window. \n' \
+           'Press %s to translate the image. \n' \
+           'Press %s to rotate the image.' % (chr(k), 'q', 't', 'r')
+
+cv2.destroyAllWindows()
 
 
 # (3) Please implement a convolution on grayscale image.
