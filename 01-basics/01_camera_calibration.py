@@ -10,6 +10,12 @@ import glob
 # http://www.janeriksolem.net/2014/05/how-to-calibrate-camera-with-opencv-and.html
 # https://github.com/opencv/opencv/blob/master/samples/python/calibrate.py
 
+# NOTE [as of 2016-10-28]: There seems to be a known issue on Mac OS X that causes a crash of the running application
+# after 100s when using OpenCV 3.1 and VideoCapture.
+# See discussion here:
+# https://github.com/opencv/opencv/issues/5874
+# https://github.com/conda-forge/opencv-feedstock/issues/28
+# https://github.com/conda-forge/opencv-feedstock/pull/29
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
