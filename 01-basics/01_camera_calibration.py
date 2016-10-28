@@ -62,55 +62,41 @@ while True:
             cv2.imshow('img', img)
 
             # Calculate camera distortion
-            rms, mtx, dist_coefs, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, gray.shape[::-1], None,
-                                                                     None)
+            rms, mtx, dist_coefs, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, gray.shape[::-1], None, None)
 
             print '\nroot mean square (RMS) projection error:', rms
             print 'camera matrix:\n', mtx
             print 'distortion coefficients:', dist_coefs.ravel()
 
+            img = cv2.imread('test-pattern.jpg')
+            h, w = img.shape[:2]
+            newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist_coefs, (w, h), 1, (w, h))
+
+            # undistort
+            dst = cv2.undistort(img, mtx, dist_coefs, None, newcameramtx)
+
+            # crop the image
+            x, y, w, h = roi
+            dst = dst[y:y + h, x:x + w]
+            cv2.imwrite('calibration-result.png', dst)
+
+            tot_error = 0
+            mean_error = 0
+            for i in xrange(len(obj_points)):
+                img_points2, _ = cv2.projectPoints(obj_points[i], rvecs[i], tvecs[i], mtx, dist_coefs)
+                error = cv2.norm(img_points[i], img_points2, cv2.NORM_L2) / len(img_points2)
+                print error
+                tot_error += error
+                mean_error += error
+
+            print "mean error: ", mean_error / len(obj_points), " total error: ", tot_error
+
     # Wait for 'q' to exit
     elif k == ord('q'):
         break
-#     # Find the chess board corners
-#     ret, corners = cv2.findChessboardCorners(gray, (7, 6), None)
-#
-#     # If found, add object points, image points (after refining them)
-#     if ret == True:
-#         objpoints.append(objp)
-#
-#         corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-#         imgpoints.append(corners2)
-#
-#         # Draw and display the corners
-#         img = cv2.drawChessboardCorners(img, (7, 6), corners2, ret)
-#         cv2.imshow('img', img)
-#         cv2.waitKey(500)
-#
-#         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
-#
-#         img = cv2.imread('images/left12.jpg')
-#         h, w = img.shape[:2]
-#         newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
-#
-#         # undistort
-#         dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
-#
-#         # crop the image
-#         x, y, w, h = roi
-#         dst = dst[y:y + h, x:x + w]
-#         cv2.imwrite('calibresult.png', dst)
-#
-# tot_error = 0
-# mean_error = 0
-# for i in xrange(len(objpoints)):
-#     imgpoints2, _ = cv2.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
-#     error = cv2.norm(imgpoints[i], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
-#     print error
-#     tot_error += error
-#     mean_error += error
-#
-# print "mean error: ", mean_error / len(objpoints), " total error: ", tot_error
+    # Wait for 's' to save a test pattern as .jpg
+    # elif k == ord('s'):
+    #     cv2.imwrite('test-pattern.jpg', gray)
 
 # When everything done, release the capture
 cap.release()
