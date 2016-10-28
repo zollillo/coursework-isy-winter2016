@@ -198,26 +198,3 @@ while True:
 cv2.destroyAllWindows()
 
 
-# (3) Please implement a convolution on grayscale image.
-# use g = GaussianKernelCalculator(1.0, 5) as kernel, try changing sizes of the kernel
-# and measure time of execution using
-
-# start_time = time.time()
-# imgConv2d = convolution2d(g.kernel2d, imgGray)
-# print "convolution2d time:", time.time() - start_time
-
-# start_time = time.time()
-# imgConv1d = convolution1d(g.kernel1d, imgGray)
-# print "convolution1d time:", time.time() - start_time
-
-
-# you can save the image like this:
-# cv2.imwrite(filename, image)
-
-def convolution2d(kernel2d, img):
-    pass
-
-def convolution1d(kernel1d, img):
-    pass
-
-
