@@ -41,7 +41,8 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Display the resulting frame
-    cv2.imshow('frame', gray)
+    cv2.imshow('Frame by frame', gray)
+    cv2.moveWindow('Frame by frame', 0, 0)
     # Wait for keyboard event
     k = cv2.waitKey(1) & 0xFF
 
@@ -65,7 +66,8 @@ while True:
 
             # Draw and display the corners
             img = cv2.drawChessboardCorners(frame, pattern_size, corners2, found)
-            cv2.imshow('img', img)
+            cv2.imshow('Chessboard corners', img)
+            cv2.moveWindow('Chessboard corners', 640, 0)
 
             # Calculate camera distortion
             rms, mtx, dist_coefs, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, gray.shape[::-1], None, None)
