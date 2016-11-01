@@ -58,8 +58,36 @@ print 'Shape of vec3 is', vec3.shape, '\n'
 # Resources used to come up with the solution:
 # http://www.engr.ucsb.edu/~shell/che210d/numpy.pdf
 # http://www.sam.math.ethz.ch/~raoulb/teaching/PythonTutorial/intro_numpy.html
+# http://www.python-kurs.eu/numpy_numerische_operationen_auf_arrays.php
+
 def dot(v0, v1):
-    pass
+    """
+    Calculates the dot product of two vectors.
+
+    The given vectors need to be of the same dimension.
+
+    Multidimensional vectors will be flattened to one dimensional vectors
+    in order to perform component-wise multiplication.
+    Therefore, the size of the dimension of the two vectors must not be different.
+
+    :param v0: The first vector.
+    :param v1: The second vector.
+    :return: The dot product of v0 and v1, a scalar value.
+    """
+    if not v0.ndim == v1.ndim:
+        print '>>> Dimension mismatch!\n' \
+              '>>> Calculating the dot product is not possible for vectors with different dimensions:\n' \
+              '>>> ndim %s of v0 != ndim %s of v1' % (v0.ndim, v1.ndim)
+        return
+
+    if not v0.flatten().shape == v1.flatten().shape:
+        print '>>> Size mismatch!\n' \
+              '>>> Not possible to calculate dot product of 1D-vectors that differ in size:\n' \
+              '>>> Size %s of v0 != size %s of v1' % (v0.flatten().shape, v1.flatten().shape)
+        return
+
+    dot_prod = np.array([v0.flatten() * v1.flatten()]).sum()
+    return dot_prod
 
 
 def magnitude(v):
@@ -73,11 +101,17 @@ def magnitude(v):
     return np.sqrt(mag.sum())
 
 
-# Print to console to test the function with the given vectors
-# print 'Magnitude of vec0 =', magnitude(vec0)
-# print 'Magnitude of vec1 =', magnitude(vec1)
-# print 'Magnitude of vec2 =', magnitude(vec2)
-# print 'Magnitude of vec3 =', magnitude(vec3), '\n'
+# Print to console to test the functions with given vectors.
+print 'Task #1.2'
+print '========='
+print 'dot(vec0, vec1) =', dot(vec0, vec1)
+print 'dot(vec2, vec3) =', dot(vec2, vec3)
+print 'Check result against numpy vdot=', np.vdot(vec2, vec3)
+print ''
+print 'Magnitude of vec0 =', magnitude(vec0)
+print 'Magnitude of vec1 =', magnitude(vec1)
+print 'Magnitude of vec2 =', magnitude(vec2)
+print 'Magnitude of vec3 =', magnitude(vec3), '\n'
 
 
 # (3) compute vec0^T vec1 M vec0 using numpy operations
@@ -90,6 +124,9 @@ vec0T_dot_vec1 = np.dot(vec0T, vec1)
 M_dot_vec0 = np.dot(M, vec0)
 result = vec0T_dot_vec1 * M_dot_vec0
 # Print results to console
+print 'Task #1.3'
+print '========='
+print 'Calculating vec0^T vec1 M vec0 using numpy operations:'
 print 'vec0.transpose() =', vec0T
 print 'Shape of vec0 transposed is', vec0T.shape
 print 'np.dot(vec0T, vec1) =', vec0T_dot_vec1
@@ -134,6 +171,8 @@ juxtaposed_lenna = np.concatenate((juxtaposed_lenna[:, 0:columns], lenna_color),
 # For displaying the generated image - see below!
 
 # Print some useful information to console
+print 'Task #2.1 & #2.2'
+print '========='
 print 'Shape of lenna_gray is', lenna_gray.shape
 print 'Shape of lenna_color is', lenna_color.shape, '\n'
 
