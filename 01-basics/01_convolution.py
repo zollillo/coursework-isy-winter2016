@@ -85,7 +85,7 @@ def convolution1d(kernel1d, source):
             # in order to place the center element of the kernel over the source pixel.
             roi = source[y: y + 1, x - padding: x + padding + 1]
             # Compute new value (i.e. perform convolution) by calculating the sum of the element-wise product
-            # of kernel2d matrix and ROI matrix.
+            # of kernel1d matrix and ROI matrix.
             new_pixel_value = (kernel1d * roi).sum()
 
             # Assign new value at indices of output array that correspond to (x,y) coordinate of source image.
@@ -98,7 +98,7 @@ def convolution1d(kernel1d, source):
             # in order to place the center element of the kernel over the source pixel.
             roi = output[y - padding: y + padding + 1, x: x + 1]
             # Compute new value (i.e. perform convolution) by calculating the sum of the element-wise product
-            # of kernel2d matrix and ROI matrix.
+            # of kernel1d matrix and ROI matrix.
             new_pixel_value = (kernel1d * roi).sum()
 
             # Assign new value at indices of output array that correspond to (x,y) coordinate of source image.
