@@ -28,6 +28,8 @@ vec2 = np.array([1, 2, 3, 4, 5], dtype='f').reshape(5, 1)
 vec3 = np.array([-1, 9, 5, 3, 1], dtype='f').reshape(5, 1)
 
 # Print to console to check the results
+print 'Task #1.1'
+print '========='
 print 'M ='
 print M
 print 'Shape of M is', M.shape, '\n'
