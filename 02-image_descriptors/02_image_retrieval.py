@@ -1,3 +1,4 @@
+import numpy as np
 import cv2
 import glob
 from Queue import PriorityQueue
@@ -10,9 +11,11 @@ from Queue import PriorityQueue
 
 
 # implement distance function
+# Resources:
+# http://stackoverflow.com/a/32142625
+# https://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.norm.html
 def distance(a, b):
-    # YOUR CODE HERE
-    pass
+    return np.linalg.norm(a - b)
 
 
 def create_keypoints(w, h):
