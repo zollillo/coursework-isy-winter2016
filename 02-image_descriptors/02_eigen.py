@@ -43,8 +43,8 @@ corner[2][2] = 0.0
 flat = np.zeros((3, 3, 1), np.float32)
 
 # choose which one to use to compute eigenvector / eigenvalues
-# img = edge
-img = corner
+img = edge
+# img = corner
 # img = flat
 
 # simple gradient extraction
@@ -82,6 +82,15 @@ eigMat[1][1] = IyIy
 # eigMat[1][0] = (Gx * Gy).sum()
 # eigMat[1][1] = (Gy * Gy).sum()
 
+# ??????? Magnitude of x and y gradients
+# Ix = np.linalg.norm(Gx)
+# Iy = np.linalg.norm(Gy)
+#
+# eigMat[0][0] = Ix * Ix
+# eigMat[0][1] = Ix * Iy
+# eigMat[1][0] = Ix * Iy
+# eigMat[1][1] = Iy * Iy
+
 # compute eigenvectors and eigenvalues using the numpy
 # linear algebra package
 
@@ -91,7 +100,7 @@ w, v = np.linalg.eig(eigMat)
 # out and show the image
 print 'matrix:\n', eigMat, '\n'
 print 'eigenvalues:', w, '\n'
-print 'eigenvectors:\n', v
+print 'eigenvectors:\n', v, '\n'
 
 scaling_factor = 100
 img = cv2.resize(img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
