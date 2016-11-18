@@ -13,7 +13,7 @@ class ImageStitcher:
 
         # match ratio to clean feature area from non-important ones
         self.distanceRatio = 0.75
-        # theshold for homography
+        # threshold for homography
         self.reprojectionThreshold = 4.0
 
     def match_keypoints(self, kpsPano1, kpsPano2, descriptors1, descriptors2):
@@ -92,27 +92,38 @@ class ImageStitcher:
     def stitch_to_panorama(self):
 
         # YOUR CODE HERE
+        # Ressources that helped to come up with solution:
+        # http://www.pyimagesearch.com/2016/01/11/opencv-panorama-stitching/
+        
         # 1. create feature extraction
+        sift = cv2.xfeatures2d.SIFT_create()
         # 2. detect and compute keypoints and descriptors for the first image
+        (img_1, img_2, img_3) = self.imagelist
+        kp, des = sift.detectAndCompute(img_1, None)
 
         # 3. loop through the remaining images and detect and compute keypoints + descriptors
-
+        kp2, des2 = sift.detectAndCompute(img_2, None)
+        kp3, des3 = sift.detectAndCompute(img_3, None)
         # 4. match features between the two images consecutive images and check if the
         # result might be None.
-
+        matching = self.match_keypoints(kp, kp2, des, des2)
         # if not enough matches were found we can't stitch
         # and we break here
+        if matching is None:
+            return
 
         # The result contains matches and a status object that can be used to draw the matches.
         # Additionally (and more importantly it contains the transformation matrix (homography matrix)
         # commonly refered to as H. That can and should be used with cv2.warpPerspective to transform
         # consecutive images such that they fit together.
         # make sure the size of the new (warped) image is large enough to support the overlap
-
+        (H, status, matches) = matching
         # the resulting image might be too wide (lot of black areas on the right) because there is a
         # substantial overlap
+        panoramaImg = cv2.warpPerspective(img_1, H, (img_1.shape[1] + img_2.shape[1], img_2.shape[0]))
+        panoramaImg[0:img_2.shape[0], 0:img_2.shape[1]] = img_2
 
         # 5. create a new image using draw_matches containing the visualized matches
-
+        matchList = self.draw_matches(img_1, img_2, kp, kp2, matches, status)
         # 6. return the resulting stitched image
         return (matchList, panoramaImg)
