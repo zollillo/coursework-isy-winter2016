@@ -94,7 +94,7 @@ class ImageStitcher:
         # YOUR CODE HERE
         # Ressources that helped to come up with solution:
         # http://www.pyimagesearch.com/2016/01/11/opencv-panorama-stitching/
-        
+
         # 1. create feature extraction
         sift = cv2.xfeatures2d.SIFT_create()
         # 2. detect and compute keypoints and descriptors for the first image
