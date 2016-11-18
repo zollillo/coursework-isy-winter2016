@@ -17,6 +17,8 @@ while True:
 
     # YOUR CODE HERE
     # ==============
+    # Resources used:
+    # http://docs.opencv.org/3.1.0/da/df5/tutorial_py_sift_intro.html
 
     # Capture frame-by-frame
     ret, frame = cap.read()
