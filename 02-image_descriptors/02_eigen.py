@@ -19,6 +19,7 @@ edge[2][1] = 255.0
 edge[2][2] = 255.0
 
 # 3x3 edge image
+# edge along y axis - just for testing
 edge_y = np.zeros((3, 3, 1), np.float32)
 edge_y[0][0] = 255.0
 edge_y[0][1] = 255.0
@@ -43,8 +44,8 @@ corner[2][2] = 0.0
 flat = np.zeros((3, 3, 1), np.float32)
 
 # choose which one to use to compute eigenvector / eigenvalues
-img = edge
-# img = corner
+# img = edge
+img = corner
 # img = flat
 
 # simple gradient extraction
