@@ -7,7 +7,7 @@ import glob
 
 # Modifications made are based on following resources:
 # http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_video_display/py_video_display.html
-# http://www.janeriksolem.net/2014/05/how-to-calibrate-camera-with-opencv-and.html
+# http://www.janeriksolem.net/how-to-calibrate-camera-with-opencv-and.html
 # https://github.com/opencv/opencv/blob/master/samples/python/calibrate.py
 
 # NOTE [as of 2016-10-28]: There seems to be a known issue on Mac OS X that causes a crash of the running application
