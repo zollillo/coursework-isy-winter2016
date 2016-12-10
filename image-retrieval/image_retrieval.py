@@ -32,7 +32,7 @@ def create_keypoints(w, h):
 
 
 # 1. preprocessing and load
-images = glob.glob('./images/db/*/*.jpg')
+images = glob.glob('./db/*/*.jpg')
 
 
 # 2. create keypoints on a regular grid (cv2.KeyPoint(r, c, keypointSize), as keypoint size use e.g. 11)
@@ -72,7 +72,7 @@ for img_file in images:
 q = PriorityQueue()
 
 # Load query image
-query_img = cv2.imread('./images/db/query_face.jpg')
+query_img = cv2.imread('./db/query_face.jpg')
 # query_img = cv2.imread('./images/db/query_car.jpg')
 # query_img = cv2.imread('./images/db/query_flower.jpg')
 
