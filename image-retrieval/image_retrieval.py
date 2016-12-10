@@ -3,7 +3,6 @@ import cv2
 import glob
 from Queue import PriorityQueue
 import math
-from matplotlib import pyplot as plt
 
 ############################################################
 #
@@ -58,7 +57,7 @@ for img_file in images:
     # Compute SIFT descriptors
     kp, des = sift.compute(gray, keypoints)
 
-    # Store a tuple containing the image and its descriptor 
+    # Store a tuple containing the image and its descriptor
     descriptors.append((img_file, des))
 
 
@@ -118,7 +117,7 @@ while not q.empty():
     (priority, img) = q.get()
     search_result = cv2.imread(img)
     search_result = cv2.resize(search_result, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
-    
+
     # Find ROI in top row
     if queue_index < grid_size:
         img_gallery[0:128, top_index * cols:top_index * cols + cols] = search_result
@@ -128,7 +127,7 @@ while not q.empty():
     if queue_index >= grid_size:
         img_gallery[128:257, bottom_index * cols:bottom_index * cols + cols] = search_result
         bottom_index += 1
-        
+
     queue_index += 1
 
 
